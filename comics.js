@@ -11,7 +11,6 @@ comics.get("/", function(req, res) {
 comics.get("/:comic", function(req, res) {
     res.setHeader("Content-Type", "text/html")
     res.send(fs.readFileSync("./public/index.html"))
-    console.log(req.params.comic);
 })
 
 /* xkcd */

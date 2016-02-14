@@ -13,6 +13,7 @@
     <script src="/static/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="/static/elements/elements.html">
     <link rel="shortcut icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="/static/styles/comics.css">
 </head>
 
 <body class="fullbleed layout vertical">
@@ -20,9 +21,15 @@
     <paper-drawer-panel left-drawer id="paperDrawerPanel">
         <paper-header-panel drawer>
             <paper-toolbar class="menu">
-                <span class="paper-font-title">Comics</span>
+                <span class="paper-font-title">Sources</span>
             </paper-toolbar>
             <paper-menu id="nav">
+                <!-- <a class="menu-item" href="/">
+                    <paper-item>
+                        <iron-icon icon="home"></iron-icon>
+                        <span>Home</span>
+                    </paper-item>
+                </a> -->
                 <a class="menu-item" href="{{baseUrl}}xkcd">
                     <paper-item>
                         <!-- <iron-icon icon="home"></iron-icon> -->
@@ -41,12 +48,13 @@
         <paper-scroll-header-panel main fixed>
           <paper-toolbar class="titulo">
               <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-              <div class="paper-font-title">Comics</div>
+              <div class="paper-font-title">Last Comic Strip</div>
               <span class="flex"></span>
-              <paper-icon-button icon="refresh" title="Recarregar"></paper-icon-button>
+              <a href="/"><paper-icon-button id="home" icon="home" title="Home"></paper-icon-button></a>
+              <paper-icon-button icon="refresh" title="Recarregar" onclick="window.location.reload(true);"></paper-icon-button>
           </paper-toolbar>
           <div id="container">
-              <comic-view host={{baseUrl}}></comic-view>
+              <comic-view host="{{baseUrl}}"></comic-view>
           </div>
         </paper-scroll-header-panel>
     </paper-drawer-panel>
