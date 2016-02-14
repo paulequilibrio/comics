@@ -8,6 +8,9 @@
 
   // Sets app default base URL
   app.baseUrl = '/';
+  if (window.location.port === '') {
+      app.baseUrl = 'http://comics.pauloalexandre.com/';
+  }
 
   // Listen for template bound event to know when bindings
   // have resolved and content has been stamped to the page
