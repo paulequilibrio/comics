@@ -1,2 +1,2 @@
-# comics
-Just a view for comics
+# Comics
+Just a comics view

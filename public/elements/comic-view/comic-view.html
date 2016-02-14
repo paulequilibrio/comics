@@ -1,0 +1,72 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<dom-module id="comic-view">
+    <template>
+        <style>
+          :host {
+            display: block;
+          }
+        </style>
+
+        <iron-ajax
+            auto
+            url="http://localhost:3000/api/v1{{comicSource}}"
+            handle-as="json"
+            last-response="{{comic}}"
+            debounce-duration="100">
+        </iron-ajax>
+
+        <h1>
+            <span>{{comic.title}}</span>
+        </h1>
+        <h3>
+            Comic published on {{date}} from <a href="{{comic.source}}">{{comic.author}}</a>
+        </h3>
+        <iron-image placeholder="/static/loading.gif" preload src="{{comic.comic}}"></iron-image>
+        <!-- <p>
+            <span>{{comic.author}}</span>
+        </p> -->
+    </template>
+
+    <script>
+      (function() {
+      'use strict';
+          Polymer({
+              is: 'comic-view',
+              properties: {
+                  path: {
+                      type: String,
+                      value: '/',
+                      notify: true
+                  },
+                  comicSource: {
+                    type: String,
+                    value: window.location.pathname
+                  },
+                  comic: {
+                      type: Object,
+                      notify: true
+                  },
+                  date: {
+                      type: String,
+                      computed: 'formatDate(comic.published)'
+                  }
+              },
+
+              formatDate(published){
+                  console.log(moment(published).format('MMMM Do YYYY, h:mm a'));
+                  return moment(published).format('MMMM Do YYYY, h:mm a');
+              },
+
+              attached: function(){
+                  while (document.querySelector('iron-ajax').loading)
+                  {
+                      comic.title = "loadgin";
+                  }
+              },
+
+          });
+      })();
+    </script>
+</dom-module>
