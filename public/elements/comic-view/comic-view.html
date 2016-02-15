@@ -18,6 +18,19 @@
                 width: 100%;
                --paper-progress-active-color: #3f51b5;
             }
+            /* Non-Retina Screens */
+            @media screen
+              and (min-device-width: 1200px)
+              and (max-device-width: 1600px) {
+                .resize { max-width: 60%; }
+            }
+            /* Retina Screens */
+            @media screen
+              and (min-device-width: 1200px)
+              and (max-device-width: 1600px)
+              and (min-resolution: 192dpi) {
+                .resize { max-width: 60%; }
+            }
         </style>
 
         <template is="dom-if" if="{{isHome()}}">
@@ -34,6 +47,7 @@
                 debounce-duration="500"
                 loading="{{loading}}">
             </iron-ajax>
+
             <template is="dom-if" if="{{loading}}">
                 <div class="wrapper">
                     <h1 id="title">
@@ -42,7 +56,8 @@
                     <paper-progress indeterminate="true"></paper-progress>
                 </div>
             </template>
-            <template is="dom-if" if="{{!loading}}">
+
+            <template is="dom-if" if="{{!error}}">
                 <h1 id="title">
                     <span>{{published}} <a href="{{comic.source}}">{{comic.author}}</a></span>
                 </h1>
@@ -57,6 +72,14 @@
                         <span id="text">{{comic.text}}</span>
                     </p>
                 </div>
+            </template>
+
+            <template is="dom-if" if="{{error}}">
+                <h1 id="title">
+                    <span>Not found!</span>
+                </h1>
+                <p>Seems like <b>{{comic.invalid}}</b> is not a source &#x1F61E</p>
+                <p>Try another one from the left menu &#x1F601</p>
             </template>
         </template>
     </template>
@@ -93,15 +116,26 @@
                   date: {
                       type: String,
                       notify: true,
-                      computed: 'formatDate(comic.published)'
+                      computed: 'formatDate(comic)'
                   },
+                  error: {
+                      type: Boolean,
+                      notify: true,
+                      computed: 'notFound(comic)',
+                  }
               },
 
-              formatPublished(comic){ return 'Published by '; },
-              formatDate(published) { return 'on '+moment(published).format('LLLL'); },
+              formatPublished(comic) { return 'Published by '; },
+              formatDate(comic) { return 'on ' + moment(comic.published).format('LLLL'); },
+
               isHome(){
                   if (window.location.pathname === '/') { return true; }
                   else { return false; }
+              },
+
+              notFound(comic){
+                  if (comic.author) return false;
+                  else return true;
               },
 
             //   setHeight(url){
