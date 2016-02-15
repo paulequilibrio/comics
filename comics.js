@@ -17,7 +17,7 @@ comics.get("/:comic", function(req, res) {
 comics.get("/api/v1/xkcd", function(req, res) {
     feed("http://xkcd.com/atom.xml", function(err, articles) {
         if (err) throw err;
-        // console.log(JSON.stringify(articles, null, 2));
+        // console.log(JSON.stringify(articles[0]), null, 2);
         var data = {
             comic: '',
             author: articles[0].feed.name,
@@ -25,9 +25,12 @@ comics.get("/api/v1/xkcd", function(req, res) {
             source: articles[0].link,
             published: articles[0].published
         }
-        xray(articles[0].link, '#comic img@src')(function(err, comic) {
-            data.comic = comic
-            res.send(data)
+        xray(articles[0].link, '#comic img@title')(function(err, title) {
+            data.text = title
+            xray(articles[0].link, '#comic img@src')(function(err, comic) {
+                data.comic = comic
+                res.send(data)
+            })
         })
     });
 });
@@ -52,8 +55,11 @@ comics.get("/api/v1/willtirando", function(req, res) {
             source: articles[0].link,
             published: articles[0].published
         }
-        xray(articles[0].content, 'img@src')(function(err, comic){
+        xray(articles[0].content, 'img@src')(function(err, comic) {
             data.comic = comic
+            // if ( articles[1].content.split('center;">')[1] ) {
+            //     data.text = articles[1].content.split('center;">')[1].slice(0,-5);
+            // }
             res.send(data)
         })
     });
@@ -84,13 +90,16 @@ comics.get("/api/v1/dilbert", function(req, res) {
         var data = {
             comic: '',
             author: articles[0].feed.name,
-            title: '', //articles[0].title,
+            title: '',
             source: articles[0].link,
             published: articles[0].published
         }
-        xray(articles[0].link, '.img-comic@src')(function(err, comic){
-            data.comic = comic
-            res.send(data)
+        xray(articles[0].link, 'span.comic-title-name')(function(err, title){
+            data.title = title;
+            xray(articles[0].link, '.img-comic@src')(function(err, comic){
+                data.comic = comic
+                res.send(data)
+            })
         })
     });
 });
@@ -106,9 +115,12 @@ comics.get("/api/v1/drpepper", function(req, res) {
             source: articles[0].link,
             published: articles[0].published
         }
-        xray(articles[0].content, 'img@src')(function(err, comic){
-            data.comic = comic
-            res.send(data)
+        xray(articles[0].content, 'p')(function(err, p){
+            data.text = p;
+            xray(articles[0].content, 'img@src')(function(err, comic){
+                data.comic = comic
+                res.send(data)
+            })
         })
     });
 });

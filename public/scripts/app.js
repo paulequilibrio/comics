@@ -27,4 +27,4 @@
   //   app.$.paperDrawerPanel.closeDrawer();
   // };
 
-  (document);
+})(document);

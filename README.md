@@ -1,2 +1,2 @@
-# Comics
-Just a comics view
+# Newer Comic Strip Viewer
+Just a comic strip viewer

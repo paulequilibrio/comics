@@ -1,3 +1,8 @@
-#home iron-icon.iron-icon-0 {
-    fill: white;
-}
+#home iron-icon.iron-icon-0 { fill: white; }
+#container { padding: 10px; }
+#nav { background-color: transparent; }
+#drawer { background-color: #CCC; }
+a.menu-item { text-decoration: none; color: black; }
+paper-item iron-icon { padding-right: 5px; }
+paper-toolbar.menu { background-color: #303F9F; }
+paper-toolbar.titulo { background-color: #3F51B5; }

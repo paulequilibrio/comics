@@ -4,25 +4,25 @@
 <dom-module id="comic-view">
     <template>
         <style>
-          :host {
-            display: block;
-            height: 100%;
-            width: 100%;
-          }
-
-          iron-image {
-            background-color: lightgray;
-            --iron-image-width: 100%;
-          }
-
-          #title {
-              font-size: 100%;
-          }
+            :host {
+                display: block;
+                height: 100%;
+                width: 100%;
+            }
+            #title { font-size: 100%; }
+            #text { font-size: small; }
+            .wrapper {width: 100%; margin:10px auto;}
+            .resize {width:100%; height:auto;}
+            iron-image { --iron-image-width: 100%; }
+            paper-progress {
+                width: 100%;
+               --paper-progress-active-color: #3f51b5;
+            }
         </style>
 
         <template is="dom-if" if="{{isHome()}}">
             <h2>How to use</h2>
-            <p>Just choose one source from the left menu to see the lastest posted comic strip.</p>
+            <p>Just choose one source from the left menu.</p>
         </template>
 
         <template is="dom-if" if="{{!isHome()}}">
@@ -31,17 +31,33 @@
                 url="{{host}}api/v1{{comicSource}}"
                 handle-as="json"
                 last-response="{{comic}}"
-                debounce-duration="500">
+                debounce-duration="500"
+                loading="{{loading}}">
             </iron-ajax>
-
-            <h1 id="title">
-                <span>Published by <a href="{{comic.source}}">{{comic.author}}</a></span>
-            </h1>
-            <p>on {{date}}</p>
-            <h2>
-                <span>{{comic.title}}</span>{{setHeight(comic.comic)}}
-            </h2>
-            <iron-image style="width:{{width}}px; height:{{height}}px;" sizing="contain" preload fade src="{{comic.comic}}"></iron-image>
+            <template is="dom-if" if="{{loading}}">
+                <div class="wrapper">
+                    <h1 id="title">
+                        <span>Loading the newer comic strip...</span>
+                    </h1>
+                    <paper-progress indeterminate="true"></paper-progress>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!loading}}">
+                <h1 id="title">
+                    <span>{{published}} <a href="{{comic.source}}">{{comic.author}}</a></span>
+                </h1>
+                <p>{{date}}</p>
+                <h2>
+                    <span>{{comic.title}}</span>
+                    <!-- {{setHeight(comic.comic)}} -->
+                </h2>
+                <div class="wrapper">
+                    <iron-image class="resize" preload fade src="{{comic.comic}}"></iron-image>
+                    <p>
+                        <span id="text">{{comic.text}}</span>
+                    </p>
+                </div>
+            </template>
         </template>
     </template>
 
@@ -59,45 +75,46 @@
                     type: String,
                     value: window.location.pathname
                   },
+                  loading: {
+                     type: Boolean,
+                     readOnly: true,
+                     notify: true,
+                     value: false
+                  },
                   comic: {
                       type: Object,
                       notify: true
+                  },
+                  published: {
+                      type: String,
+                      notify: true,
+                      computed: 'formatPublished(comic)'
                   },
                   date: {
                       type: String,
                       notify: true,
                       computed: 'formatDate(comic.published)'
                   },
-                  width: {
-                      type: Number,
-                      notify: true,
-                  },
-                  height: {
-                      type: Number,
-                      notify: true,
-                  }
               },
 
-              formatDate(published){
-                  return moment(published).format('LLLL');
-              },
-
+              formatPublished(comic){ return 'Published by '; },
+              formatDate(published) { return 'on '+moment(published).format('LLLL'); },
               isHome(){
                   if (window.location.pathname === '/') { return true; }
                   else { return false; }
               },
 
-              setHeight(url){
-                  var self = this;
-                  var img = new Image();
-                  img.onload = function(){
-                      self.width = document.querySelector('#container').clientWidth-17; // scrollbar width=17px
-                      self.height = img.height*(self.width/img.width);
-                      console.log('width', self.width);
-                      console.log('height', self.height);
-                  }
-                  img.src = url;
-              }
+            //   setHeight(url){
+            //       var self = this;
+            //       var img = new Image();
+            //       img.onload = function(){
+            //           self.width = document.querySelector('#container').clientWidth-17; // scrollbar width=17px
+            //           self.height = img.height*(self.width/img.width);
+            //           console.log('width', self.width);
+            //           console.log('height', self.height);
+            //       }
+            //       img.src = url;
+            //   }
           });
       })();
     </script>

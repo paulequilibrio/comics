@@ -7,56 +7,80 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="author" content="Paulo Alexandre Aquino da Costa">
-    <meta name="description" content="Comics view">
+    <meta name="description" content="Newer Comic Strip Viewer">
     <title>Comics</title>
     <script src="/static/bower_components/moment/moment.js"></script>
     <script src="/static/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="/static/elements/elements.html">
-    <link rel="shortcut icon" type="image/png" href="/static/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png">
     <link rel="stylesheet" href="/static/styles/comics.css">
 </head>
 
 <body class="fullbleed layout vertical">
     <template is="dom-bind" id="app">
     <paper-drawer-panel left-drawer id="paperDrawerPanel">
-        <paper-header-panel drawer>
+        <paper-header-panel drawer id="drawer">
             <paper-toolbar class="menu">
                 <span class="paper-font-title">Sources</span>
             </paper-toolbar>
             <paper-menu id="nav">
-                <!-- <a class="menu-item" href="/">
-                    <paper-item>
-                        <iron-icon icon="home"></iron-icon>
-                        <span>Home</span>
-                    </paper-item>
-                </a> -->
                 <a class="menu-item" href="{{baseUrl}}xkcd">
                     <paper-item>
-                        <!-- <iron-icon icon="home"></iron-icon> -->
+                        <iron-icon src="http://xkcd.com/s/919f27.ico"></iron-icon>
                         <span>xkcd</span>
                     </paper-item>
                 </a>
                 <a class="menu-item" href="{{baseUrl}}hacktoon" >
                     <paper-item>
-                        <!-- <iron-icon icon="print"></iron-icon> -->
+                        <iron-icon src="http://hacktoon.com/static/img/favicon.ico"></iron-icon>
                         <span>Hacktoon!</span>
+                    </paper-item>
+                </a>
+                <a class="menu-item" href="{{baseUrl}}explosm" >
+                    <paper-item>
+                        <iron-icon src="http://explosm.net/favicons/favicon-32x32.png"></iron-icon>
+                        <span>Explosm</span>
+                    </paper-item>
+                </a>
+                <a class="menu-item" href="{{baseUrl}}dilbert" >
+                    <paper-item>
+                        <iron-icon src="http://dilbert.com/assets/favicon/favicon-c51c513982db923283049a536d65fced.ico"></iron-icon>
+                        <span>Dilbert</span>
+                    </paper-item>
+                </a>
+                <a class="menu-item" href="{{baseUrl}}willtirando" >
+                    <paper-item>
+                        <iron-icon src="http://www.willtirando.com.br/wp-content/uploads/2015/09/cropped-FAVICON-3009-32x32.png"></iron-icon>
+                        <span>WillTirando</span>
+                    </paper-item>
+                </a>
+                <a class="menu-item" href="{{baseUrl}}drpepper" >
+                    <paper-item>
+                        <iron-icon src="http://blog.drpepper.com.br/wp-content/uploads/2015/05/ico2.png"></iron-icon>
+                        <span>Dr. Pepper</span>
+                    </paper-item>
+                </a>
+                <a class="menu-item" href="{{baseUrl}}vidadeprogramador" >
+                    <paper-item>
+                        <iron-icon src="http://vidadeprogramador.com.br/wp-content/themes/vdp/images/favicon.png"></iron-icon>
+                        <span>Vida de Programador</span>
                     </paper-item>
                 </a>
             </paper-menu>
         </paper-header-panel>
 
-        <paper-scroll-header-panel main fixed>
+        <paper-header-panel main fixed>
           <paper-toolbar class="titulo">
               <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-              <div class="paper-font-title">Last Comic Strip</div>
+              <div class="paper-font-title">Newer comic strip</div>
               <span class="flex"></span>
               <a href="/"><paper-icon-button id="home" icon="home" title="Home"></paper-icon-button></a>
-              <paper-icon-button icon="refresh" title="Recarregar" onclick="window.location.reload(true);"></paper-icon-button>
+              <paper-icon-button icon="refresh" title="Reload" onclick="window.location.reload(true);"></paper-icon-button>
           </paper-toolbar>
           <div id="container">
               <comic-view host="{{baseUrl}}"></comic-view>
           </div>
-        </paper-scroll-header-panel>
+        </paper-header-panel>
     </paper-drawer-panel>
     </template>
     <script src="/static/scripts/app.js"></script>
