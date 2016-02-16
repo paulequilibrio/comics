@@ -13,6 +13,7 @@
             #text { font-size: small; }
             .wrapper {width: 100%; margin:10px auto;}
             .resize {width:100%; height:auto;}
+            .deadlink {width:80%; height:auto;}
             iron-image { --iron-image-width: 100%; }
             paper-progress {
                 width: 100%;
@@ -23,6 +24,7 @@
               and (min-device-width: 1200px)
               and (max-device-width: 1600px) {
                 .resize { max-width: 60%; }
+                .deadlink {width:40%; height:auto;}
             }
             /* Retina Screens */
             @media screen
@@ -75,11 +77,14 @@
             </template>
 
             <template is="dom-if" if="{{error}}">
-                <h1 id="title">
-                    <span>Not found!</span>
-                </h1>
-                <p>Seems like <b>{{comic.invalid}}</b> is not a source &#x1F61E</p>
-                <p>Try another one from the left menu &#x1F601</p>
+                <div class="wrapper">
+                    <h1 id="title">
+                        <p>Oops! You find a <b>Dead Link</b></p>
+                    </h1>
+                    <img class="deadlink" src="http://cdn.duelinganalogs.com/wp-content/uploads/2014/11/Dead-Link.png" alt="Dead Link"/>
+                    <p>Seems like <b>{{comic.invalid}}</b> is not a source &#x1F61E</p>
+                    <p>Try another one from the left menu &#x1F601</p>
+                </div>
             </template>
         </template>
     </template>
