@@ -10,7 +10,7 @@
                 width: 100%;
             }
             #title { font-size: 100%; }
-            #text { font-size: small; }
+            .text { font-size: small; }
             .wrapper {width: 100%; margin:10px auto;}
             .resize {width:100%; height:auto;}
             .deadlink {width:100%; height:auto;}
@@ -61,27 +61,24 @@
 
             <template is="dom-if" if="{{!error}}">
                 <h1 id="title">
-                    <span>{{published}} <a href="{{comic.source}}">{{comic.author}}</a></span>
+                    <span>{{published}} <a target="blank" href="{{comic.source}}">{{comic.author}}</a></span>
                 </h1>
                 <p>{{date}}</p>
-                <h2>
-                    <span>{{comic.title}}</span>
-                    <!-- {{setHeight(comic.comic)}} -->
-                </h2>
+                <h2><span>{{comic.title}}</span></h2>
                 <div class="wrapper">
-                    <iron-image class="resize" preload fade src="{{comic.comic}}"></iron-image>
-                    <p>
-                        <span id="text">{{comic.text}}</span>
-                    </p>
+                    <template is="dom-if" if="{{!comic.video}}">
+                        <iron-image class="resize" preload fade src="{{comic.comic}}"></iron-image>
+                        <p><span class="text">{{comic.text}}</span></p>
+                    </template>
+                    <template is="dom-if" if="{{comic.video}}">
+                        <iframe class="resize" src="https://www.youtube.com/embed/{{video}}" frameborder="0" allowfullscreen></iframe>
+                    </template>
                 </div>
             </template>
 
             <template is="dom-if" if="{{error}}">
                 <div class="wrapper">
-                    <h1 id="title">
-                        <p>Oops! You find a <b>Dead Link</b></p>
-                    </h1>
-                    <!-- <img class="deadlink" src="http://cdn.duelinganalogs.com/wp-content/uploads/2014/11/Dead-Link.png" alt="Dead Link"/> -->
+                    <h1 id="title">Oops! You find a <b>Dead Link</b></h1>
                     <img class="deadlink" src="http://www.bknoop.de/ups/deadlink.png" alt="Dead Link"/>
                     <p>Seems like <b>{{comic.invalid}}</b> is not a source &#x1F61E</p>
                     <p>Try another one from the left menu &#x1F601</p>
@@ -124,37 +121,23 @@
                       notify: true,
                       computed: 'formatDate(comic)'
                   },
+                  video : {
+                      type: String,
+                      notify: true,
+                      computed: 'videoUrl(comic)',
+                  },
                   error: {
                       type: Boolean,
                       notify: true,
                       computed: 'notFound(comic)',
-                  }
+                  },
               },
 
+              notFound(comic){ if (comic.author) return false; else return true; },
               formatPublished(comic) { return 'Published by '; },
               formatDate(comic) { return 'on ' + moment(comic.published).format('LLLL'); },
-
-              isHome(){
-                  if (window.location.pathname === '/') { return true; }
-                  else { return false; }
-              },
-
-              notFound(comic){
-                  if (comic.author) return false;
-                  else return true;
-              },
-
-            //   setHeight(url){
-            //       var self = this;
-            //       var img = new Image();
-            //       img.onload = function(){
-            //           self.width = document.querySelector('#container').clientWidth-17; // scrollbar width=17px
-            //           self.height = img.height*(self.width/img.width);
-            //           console.log('width', self.width);
-            //           console.log('height', self.height);
-            //       }
-            //       img.src = url;
-            //   }
+              videoUrl(comic){ if (comic.video) return comic.video.split('?v=')[1]; },
+              isHome(){ if (window.location.pathname === '/') return true; else return false; },
           });
       })();
     </script>
