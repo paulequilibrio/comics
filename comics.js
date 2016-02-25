@@ -50,7 +50,7 @@ comics.get("/api/v1/drpepper", function(req, res) {
 
 
 comics.get("/api/v1/vidadeprogramador", function(req, res) {
-    feed("http://feeds.feedburner.com/VidaDeProgramador", function(error, articles) {
+    feed("http://vidadeprogramador.com.br/feed.xml", function(error, articles) {
         if (error) throw error;
         xray(articles[0].content, {
             text: 'img@title',
